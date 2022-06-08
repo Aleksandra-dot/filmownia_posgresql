@@ -77,6 +77,10 @@ public class Uzytkownik {
         komentarze.add(komentarz);
     }
 
+    public boolean sprawdzHaslo (String haslo){
+        return haslo.equals(haslo);
+    }
+
     @Override
     public String toString() {
         return login;

@@ -20,9 +20,10 @@ public class KomentarzForm extends FormLayout{
     TextField modelTxt = new TextField("Komentarz");
     NumberField ocena = new NumberField("Ocena");
     ComboBox<Komentarz.enumOcena> ocenaCmb = new ComboBox<>("Ocena");
+    ComboBox<Uzytkownik> uzytkownikCmb = new ComboBox<>("Uzytkownik");
     Button zatwierdzBtn = new Button("Dodaj", this::save);
     //Button usunBtn = new Button("Usun", this::remove);
-    //Button zamknijBtn = new Button("Zamknij", this::close);
+    Button zamknijBtn = new Button("Zamknij", this::close);
 
     public KomentarzForm(KomentarzRepository repo, FilmRepository frepo, UzytkownikRepository urepo, Film film, Uzytkownik user){
         this.Krepo = repo;
@@ -31,7 +32,8 @@ public class KomentarzForm extends FormLayout{
         this.currentFilm = film;
         this.currentUzytkownik = user;
         ocenaCmb.setItems(Komentarz.enumOcena.values());
-        VerticalLayout verticalLayout = new VerticalLayout(naglowek, modelTxt, ocena, ocenaCmb, zatwierdzBtn);
+        uzytkownikCmb.setItems(urepo.findAll());
+        VerticalLayout verticalLayout = new VerticalLayout(naglowek, modelTxt, ocena, ocenaCmb, uzytkownikCmb, zatwierdzBtn);
         add(verticalLayout);
     }
 
@@ -39,19 +41,24 @@ public class KomentarzForm extends FormLayout{
 
     private void save(ClickEvent event){
         try{
+            currentUzytkownik = uzytkownikCmb.getValue();
             Komentarz k = new Komentarz(modelTxt.getValue(),
                     ocenaCmb.getValue(),
                     ocena.getValue(),
                     currentUzytkownik, currentFilm);
-            //currentFilm.dodajKomentarz(k);
-            //currentUzytkownik.dodajKomentarz(k);
+
+
             Frepo.save(currentFilm);
             Urepo.save(currentUzytkownik);
 
             FilmView.listKomentarze.add(k);
             Krepo.save(k);
+            currentFilm.dodajKomentarz(k);
+            currentUzytkownik.dodajKomentarz(k);
+            Frepo.save(currentFilm);
+            Urepo.save(currentUzytkownik);
 
-            FilmView.komentarzGrid.setItems(Krepo.findAll());
+            FilmView.komentarzGrid.setItems(currentFilm.getKomentarze());
             Notification.show("Dodano komentarz");
         }
         catch(Exception e){

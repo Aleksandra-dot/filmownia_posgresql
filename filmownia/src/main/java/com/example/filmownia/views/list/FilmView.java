@@ -2,7 +2,6 @@ package com.example.filmownia.views.list;
 
 import com.example.filmownia.*;
 import com.example.filmownia.views.MainLayout;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -18,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Route(value = "film-view", layout = MainLayout.class)
+
 public class FilmView extends HorizontalLayout {
 
 
@@ -40,7 +40,7 @@ public class FilmView extends HorizontalLayout {
     @Autowired
 
 
-    public FilmView(UzytkownikRepository urepo, KomentarzRepository repo, FilmRepository frepo, KomentarzService service) {
+    public FilmView(UzytkownikRepository urepo, KomentarzRepository repo, FilmRepository frepo) {
         this.Krepo=repo;
         this.Frepo = frepo;
         this.Urepo = urepo;
@@ -87,7 +87,7 @@ public class FilmView extends HorizontalLayout {
         dialog.open();
     }
 
-    public void dodajKometarz(Film film ){
+    public void dodajKometarz(Film film){
         currentFilm = film;
         dialog = new Dialog();
         dialog.add(new H1("Komentarze filmu"));
