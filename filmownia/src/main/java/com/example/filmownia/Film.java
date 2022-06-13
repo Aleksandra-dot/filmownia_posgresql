@@ -4,6 +4,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +54,7 @@ public class Film {
             suma+=komentarz.getOcena();
             licznik++;
         }
-        return suma/licznik;
+        return Math.round((suma/licznik) * 10) / 10.0;
     }
 
     public long getId() {
@@ -128,8 +129,8 @@ public class Film {
     public void setObsada(List<Osoba> obsada) {
         this.obsada = obsada;
     }
-    public List<Osoba> getRezyserowie() {
-        return rezyserowie;
+    public Osoba getRezyserowie() {
+        return  rezyserowie.get(0);
     }
 
     public void dodajKomentarz(Komentarz komentarz){
